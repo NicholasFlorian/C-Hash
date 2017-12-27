@@ -33,10 +33,17 @@ char **increaseWords(char **fromRead, int *length, char *word, int *size);
  **/
 char *shortenWordLength(char *wordToShorten);
 
-/**Function to read user input
+/**read user input
  *@return user input int
  **/
 int softenIntInput();
+
+/**check if string can be a letter
+ *@pre meant for selecting options from 0 and up
+ *@return the int it becomes, or -1 if not
+ *@param the string the user wants to check
+ **/
+int softenInt();
 
 /**Function to read user input
  *@return user input string

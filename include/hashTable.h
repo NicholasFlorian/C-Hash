@@ -1,6 +1,7 @@
 /**
  * @file HashTableAPI.h
  * @author Michael Ellis
+ * @edited by Nicholas Florian
  * @date February 2017
  * @brief File containing the function definitions of a hash table
  
@@ -134,4 +135,5 @@ void destroyNodeData(void *data);
 void printNodeData(void *toBePrinted);
 
 void betterPrintNodeData(HTable *hashTable, void *toBePrinted);
+
 #endif

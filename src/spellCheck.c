@@ -14,7 +14,7 @@ int main(int argc, char **argv){
     //menu data
     int input = 0;
     
-    //dictionary
+    //variables for the dictionary
     int *length = malloc(sizeof(int));
     int *size = malloc(sizeof(int));
     char **dictionary = readCharArray(argv[1], length, size);
