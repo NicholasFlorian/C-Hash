@@ -1,0 +1,23 @@
+This file contains the results of running menu options 3 with a3_dictionary.txt and user file a3_userFile.txt.
+
+File processed by Spell Check a3_userFile.txt:
+This was not found in the dictionary.
+is was not found in the dictionary.
+a was not found in the dictionary.
+test was not found in the dictionary.
+file was not found in the dictionary.
+that was not found in the dictionary.
+checks was not found in the dictionary.
+Notice was not found in the dictionary.
+Caps was not found in the dictionary.
+
+Summary:
+Correctly spelt words: 4
+Incorrectly spelt words: 9
+
+
+Note: This section is not part of the output but the following words were found:
+try found in the dictionary.
+purple found in the dictionary.
+wren found in the dictionary.
+Pest found in the dictionary.
