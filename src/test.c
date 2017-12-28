@@ -3,92 +3,42 @@
 
 #include "../include/hashTable.h"
 #include "../include/ioHandler.h"
+#include "../include/stringArray.h"
+
+void testIoHandler();
+void testStringArray();
 
 int main(int argc, char **argv){
     
-    //create hash
+    //SystemTesting
+    testStringArray();
     
-    //dictionary
-    int *length = malloc(sizeof(int));
-    int *size = malloc(sizeof(int));
-    char **dictionary = readCharArray("dictionaryTest.txt", length, size);
-    
-    //hashmap
-    HTable *hashTable = createTable(97, hashNode, destroyNodeData, printNodeData);
-    
-    //load them all
-    for(int i = 0; i < *length; i++){
-        
-        insertDataWord(hashTable, dictionary[i]);
-        
-    }
-    
-    //print hash
-    
-    for(int i = 0; i < *length; i++){
-        
-        if(!(lookupDataWord(hashTable, dictionary[i]) == NULL)){
-            
-            betterPrintNodeData(hashTable,lookupDataWord(hashTable, dictionary[i]));
-            
-        }
-        
-    }
-    
-    //add word to hash
-    dictionary = increaseWords(dictionary, length, "caps", size);
-    insertDataWord(hashTable, "caps");
-    
-    //print hash
-    
-    for(int i = 0; i < *length; i++){
-        
-        if(!(lookupDataWord(hashTable, dictionary[i]) == NULL)){
-            
-            betterPrintNodeData(hashTable,lookupDataWord(hashTable, dictionary[i]));
-            
-        }
-        
-    }
-    
-    //take away word from hash
-    hashTable->destroyData(lookupDataWord(hashTable, "Purple"));
+}
 
-    //print hash
-    for(int i = 0; i < *length; i++){
+void testStringArray(){
+    
+    //very rough system test
+    
+    printf("Creating String Array\nThis should create all 20 words\n");
+    StringArray* stringArray = createStringArray();
+    
+    printf("Reading array from file\n");
+    stringArray = readCharArray("userTest.txt", stringArray);
+    
+    if(stringArray == NULL) printf("File Error\n");
+    else{
         
-        if(!(lookupDataWord(hashTable, dictionary[i]) == NULL)){
-            
-            betterPrintNodeData(hashTable,lookupDataWord(hashTable, dictionary[i]));
-            
+        printf("File worked\n");
+    
+        printf("words read successfully :%d\n", stringArray->count);
+        printf("total characters stored :%d\n", stringArray->size);
+    
+        for(int i = 0; i < stringArray->count - 1; i++){
+        
+            printf("%s\n", stringArray->array[i]);
+        
         }
-        
+    
     }
-    
-    //spell check
-    int *toCheckLength = malloc(sizeof(int));
-    int *toCheckSize = malloc(sizeof(int));
-    char** toCheck = readCharArray("userTest.txt", toCheckLength, toCheckSize);
-    
-    int correctCount = 0;
-    int incorrectCount = 0;
-    
-    
-    for(int i = 0; i < *toCheckLength; i++){
-        
-        if(lookupDataWord(hashTable, toCheck[i]) == NULL){
-            
-            printf("%s was not found in the dictionary.\n", toCheck[i]);
-            incorrectCount++;
-            
-        }else{
-            
-            correctCount++;
-            
-        }
-        
-    }
-    
-    printf("Summary:\nCorrectly spelt words: %d\nIncorrectly spelt words: %d", correctCount, incorrectCount);
     
 }

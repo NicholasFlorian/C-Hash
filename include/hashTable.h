@@ -1,5 +1,5 @@
 /**
- * @file HashTableAPI.h
+ * @file HashTable.h
  * @author Michael Ellis
  * @edited by Nicholas Florian
  * @date February 2017
