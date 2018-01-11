@@ -17,7 +17,7 @@ StringArray *createStringArray(){
     
 }
 
-StringArray *readCharArray(char *url, StringArray* stringArray){
+void readCharArray(char *url, StringArray* stringArray){
  
     //var
     
@@ -31,7 +31,7 @@ StringArray *readCharArray(char *url, StringArray* stringArray){
     //if file doesnt exist let the calling method know
     if(!file){
         
-        return NULL;
+        stringArray = NULL;
         
     }
     
@@ -42,38 +42,42 @@ StringArray *readCharArray(char *url, StringArray* stringArray){
         
         //get the word
         fgets(word, 80, file);
-        printf("1,\n");
+ 
         addString(stringArray, word);
-        printf("2,\n");
         
     }
     
     free(word);
     
-    return stringArray;
-    
 }
 
 void addString(StringArray* stringArray, char* stringToAdd){
     
+    //var
+    int length = 0;
+    
     //increase the amount of chars
-    stringArray->size += strlen(stringToAdd) + 1;
+    length = strlenX(stringToAdd) + 1; //1 for trailing end /0
+    stringArray->size+= length;
     
-    printf("  >>Current size of charArray: %d<<  ", stringArray->size);
+    //printf("Current size of charArray: %d\n", stringArray->size);
     
-    printf("A, ");
+    //printf("A, ");
     
     //increase the memory of the array
     stringArray->array = realloc(
         stringArray->array,
-        sizeof(char) * (stringArray->size) );
+        sizeof(char*) * (stringArray->count + 1) );
    
-    printf("B\n");
-
-    //ORIGINAL LINE//fromRead[count] = shortenWordLength(word);
+    //printf("B\n");
     
     //add word to stringArray
-    stringArray->array[stringArray->count] = shortenWordLength(stringToAdd);
+    
+    stringArray->array[stringArray->count] = malloc(sizeof(char) * length);
+    strcpy(stringArray->array[stringArray->count], shortenWordLength(stringToAdd));
+    
+    printf("array at index <%d>, <%s>\n", stringArray->count, stringArray->array[stringArray->count]);
+    
     
     stringArray->count++;
     
@@ -84,6 +88,22 @@ void deleteStringArray(StringArray* stringArray){
     //TODO
     
 }
+
+int strlenX(char *stringToIndex){
+    
+    int length = strlen(stringToIndex);
+    
+    //ignore getting the length of the word if the \n is within
+    if(stringToIndex[length - 1] == '\n'){
+        
+        return length -1;
+        
+    }
+    
+    return length;
+    
+}
+
 
 char* shortenWordLength(char *wordToShorten){
     
@@ -105,6 +125,13 @@ char* shortenWordLength(char *wordToShorten){
         after = realloc(after, sizeof(char) * count - 1);
         
     }
+    else{
+        
+        
+        
+    }
+    
+    printf("AFTER = %s\n",after);
     
     //free old word and return new word
     //free(wordToShorten);

@@ -29,7 +29,7 @@ StringArray *createStringArray();
  *@return array of strings read from file
  *@param url is the url to the file you want to read
  **/
-StringArray *readCharArray(char *url, StringArray* stringArray);
+void readCharArray(char *url, StringArray* stringArray);
 
 /**Function to add a word to the array
  *@pre each word read as on a seperate line of the file
@@ -43,6 +43,8 @@ void addString(StringArray* stringArray, char* stringToAdd);
  *@param wordToShorten word with extra memory allocated
  **/
 void deleteStringArray(StringArray* stringArray);
+
+int strlenX(char *stringToIndex);
 
 /**Function to return copy of string with smaller memory size
  *@return string with no extra memory

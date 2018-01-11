@@ -17,13 +17,12 @@ int main(int argc, char **argv){
 
 void testStringArray(){
     
-    //very rough system test
-    
+    //very rough module test
     printf("Creating String Array\nThis should create all 20 words\n");
     StringArray* stringArray = createStringArray();
     
     printf("Reading array from file\n");
-    stringArray = readCharArray("userTest.txt", stringArray);
+    readCharArray("userTest.txt", stringArray);
     
     if(stringArray == NULL) printf("File Error\n");
     else{
@@ -33,7 +32,7 @@ void testStringArray(){
         printf("words read successfully :%d\n", stringArray->count);
         printf("total characters stored :%d\n", stringArray->size);
     
-        for(int i = 0; i < stringArray->count - 1; i++){
+        for(int i = 0; i < stringArray->count; i++){
         
             printf("%s\n", stringArray->array[i]);
         
@@ -42,3 +41,6 @@ void testStringArray(){
     }
     
 }
+
+
+
