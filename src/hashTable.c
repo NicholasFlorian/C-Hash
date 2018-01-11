@@ -48,6 +48,7 @@ void insertDataWord(HTable *hashTable, void *data){
     insertData(hashTable, key, data);
     
 }
+
 void insertData(HTable *hashTable, int key, void *data){
     
     int index = hashTable->hashFunction(hashTable->size, key);
@@ -77,14 +78,26 @@ void insertData(HTable *hashTable, int key, void *data){
 
 int keyGenerator(char *word){
     
-    int length = strlen(word);
-    int sum  = 0;
-    int ascii = 0;
-    int i = 0;
+    // A B C D E F G H
+    // A*B+C+D+E+F
     
+    //var
+    int length = strlen(word);
+    int muls = 0;
+    int sum  = 0;
+
+    
+    //Truncate hash
     if (length > 6) length = 6;
     
-    for(i = 0; i < length; i++){
+    //get multiplication value
+    muls = (int)word[1];
+    
+    
+    //ascii encoding
+    for(int i = 1; i < length; i++){
+        
+        int ascii = 0;
         
         ascii = (int)word[i];
         
@@ -97,15 +110,14 @@ int keyGenerator(char *word){
         
         //encode a = 0 z = 25
         ascii = ascii -97;
-        
         sum = sum + ascii;
         
     }
     
-    //printf("The word is: %s, the key is %d\n", word, sum);
+    printf("The word is: %s, the key is %d\n", word, muls * sum);
 
     
-    return sum;
+    return muls * sum;
     
 }
 
@@ -200,7 +212,7 @@ void destroyNodeData(void *data){
     }
     
     //locate hash and reset value inside to #
-    strncpy((char*)data, "#\0", 2); //TODO this 2 may cause an issue with one letter words
+    strncpy((char*)data, "#\0", 2); //TODO this 2 may cause an issue with an empty word
     
     return;
     

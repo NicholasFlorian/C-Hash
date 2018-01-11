@@ -76,7 +76,7 @@ void addString(StringArray* stringArray, char* stringToAdd){
     stringArray->array[stringArray->count] = malloc(sizeof(char) * length);
     strcpy(stringArray->array[stringArray->count], shortenWordLength(stringToAdd));
     
-    printf("array at index <%d>, <%s>\n", stringArray->count, stringArray->array[stringArray->count]);
+    //printf("array at index <%d>, <%s>\n", stringArray->count, stringArray->array[stringArray->count]);
     
     
     stringArray->count++;
@@ -125,16 +125,8 @@ char* shortenWordLength(char *wordToShorten){
         after = realloc(after, sizeof(char) * count - 1);
         
     }
-    else{
-        
-        
-        
-    }
     
-    printf("AFTER = %s\n",after);
-    
-    //free old word and return new word
-    //free(wordToShorten);
+    //return new word
     return after;
     
 }

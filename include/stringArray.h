@@ -26,8 +26,8 @@ StringArray *createStringArray();
 
 /**Function to point the hash table to the appropriate functions.
  *@pre each word read as on a seperate line of the file
- *@return array of strings read from file
  *@param url is the url to the file you want to read
+ 
  **/
 void readCharArray(char *url, StringArray* stringArray);
 
@@ -44,6 +44,10 @@ void addString(StringArray* stringArray, char* stringToAdd);
  **/
 void deleteStringArray(StringArray* stringArray);
 
+/**Exclusive strlen: Get length of string without including \n
+ *@return string length
+ *@param  stringToIndex, string to get length of
+ **/
 int strlenX(char *stringToIndex);
 
 /**Function to return copy of string with smaller memory size

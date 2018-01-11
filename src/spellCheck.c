@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../include/spellCheck.h"
 #include "../include/ioHandler.h"
 #include "../include/hashTable.h"
-#include "../include/spellCheck.h"
-
+#include "../include/stringArray.h"
 
 //TODO MAKE ENDIFS AND START IFS FOR H File
 
@@ -14,18 +14,21 @@ int main(int argc, char **argv){
     //menu data
     int input = 0;
     
-    //variables for the dictionary
-    int *length = malloc(sizeof(int));
-    int *size = malloc(sizeof(int));
-    char **dictionary = readCharArray(argv[1], length, size);
+    printf("SETTING UP DICTIONARY\n");
+    //dictionary string array
+    StringArray *dictionary = createStringArray();
+    readCharArray(argv[1], dictionary);
     
+    printf("SETTING UP HASHMAP\n");
     //hashmap
     HTable *hashTable = createTable(97, hashNode, destroyNodeData, printNodeData);
     
+    printf("PARSING DICTIONARY INTO MAP\n");
     //load them all
-    for(int i = 0; i < *length; i++){
+    for(int i = 0; i < dictionary->count; i++){
         
-        insertDataWord(hashTable, dictionary[i]);
+        //insertDataWord(hashTable, dictionary->array[i]);
+        keyGenerator(dictionary->array[i]);
         
     }
     
@@ -40,50 +43,52 @@ int main(int argc, char **argv){
         switch(input){
             
             case 1:
+                
                 //add
                 printf("Type the word you want to add: ");
                 
                 char* inputWord = softenStringInput();
                 
-                dictionary = increaseWords(dictionary, length, inputWord, size);
-                insertDataWord(hashTable, dictionary[*length -1]);
+                addString(dictionary, inputWord);
+                insertDataWord(hashTable, dictionary->array[dictionary->count]);
                 
                 free(inputWord);
                 
                 break;
             
             case 2:
+                
                 //remove
                 printf("Type the word you want to remove: ");
                 
                 char* removeWord = softenStringInput();
                 
                 hashTable->destroyData(lookupDataWord(hashTable, removeWord));
-            
                 free(removeWord);
                 
                 break;
             
             case 3:
+                
                 //spell check
                 printf("What is the file you want to spellcheck: ");
 
+                //get data from user file
                 char *fileToCheck = softenStringInput();
-                
-                int *toCheckLength = malloc(sizeof(int));
-                int *toCheckSize = malloc(sizeof(int));
-                char** toCheck = readCharArray(fileToCheck, toCheckLength, toCheckSize);
+                StringArray *toCheck = createStringArray();
+                readCharArray(fileToCheck, toCheck);
                 
                 int correctCount = 0;
                 int incorrectCount = 0;
                 
                 
                 printf("File processed by Spell Check\n");
-                for(int i = 0; i < *toCheckLength; i++){
+                
+                for(int i = 0; i < toCheck->count; i++){
                     
-                    if(lookupDataWord(hashTable, toCheck[i]) == NULL){
+                    if(lookupDataWord(hashTable, toCheck->array[i]) == NULL){
                         
-                        printf("%s was not found in the dictionary.\n", toCheck[i]);
+                        printf("%s was not found in the dictionary.\n", toCheck->array[i]);
                         incorrectCount++;
                         
                     }else{
@@ -95,10 +100,7 @@ int main(int argc, char **argv){
                 }
                 
                 free(fileToCheck);
-                free(toCheckLength);
-                free(toCheckSize);
                 free(toCheck);
-                
                 
                 printf("Summary:\nCorrectly spelt words: %d\nIncorrectly spelt words: %d", correctCount, incorrectCount);
                 
@@ -107,11 +109,11 @@ int main(int argc, char **argv){
             case 4:
                 //print words
             
-                for(int i = 0; i < *length; i++){
+                for(int i = 0; i < dictionary->count; i++){
                     
-                    if(!(lookupDataWord(hashTable, dictionary[i]) == NULL)){
+                    if(!(lookupDataWord(hashTable, dictionary->array[i]) == NULL)){
                         
-                        betterPrintNodeData(hashTable,lookupDataWord(hashTable, dictionary[i]));
+                        betterPrintNodeData(hashTable,lookupDataWord(hashTable, dictionary->array[i]));
                         
                     }
                     
