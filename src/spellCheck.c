@@ -21,14 +21,18 @@ int main(int argc, char **argv){
     
     printf("SETTING UP HASHMAP\n");
     //hashmap
-    HTable *hashTable = createTable(97, hashNode, destroyNodeData, printNodeData);
+    HTable *hashTable = createTable(222007, hashNode, destroyNodeData, printNodeData);
     
     printf("PARSING DICTIONARY INTO MAP\n");
     //load them all
     for(int i = 0; i < dictionary->count; i++){
         
-        //insertDataWord(hashTable, dictionary->array[i]);
-        keyGenerator(dictionary->array[i]);
+      
+        if(keyGenerator(dictionary->array[i]) > 0){
+            
+              insertDataWord(hashTable, dictionary->array[i]);
+            
+        }
         
     }
     
@@ -71,7 +75,7 @@ int main(int argc, char **argv){
             case 3:
                 
                 //spell check
-                printf("What is the file you want to spellcheck: ");
+                printf("What is the file you want to spell check: ");
 
                 //get data from user file
                 char *fileToCheck = softenStringInput();
@@ -82,7 +86,7 @@ int main(int argc, char **argv){
                 int incorrectCount = 0;
                 
                 
-                printf("File processed by Spell Check\n");
+                printf("File processed by spell check\n");
                 
                 for(int i = 0; i < toCheck->count; i++){
                     

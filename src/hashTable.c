@@ -15,7 +15,7 @@ HTable *createTable(size_t size,
     if(newTable != NULL){
         
         newTable->size = size;
-        newTable->table = malloc(sizeof(Node*)* newTable->size);
+        newTable->table = malloc(sizeof(Node*) * newTable->size);
         
         newTable->hashFunction = hashFunction;
         newTable->destroyData = destroyData;
@@ -56,7 +56,7 @@ void insertData(HTable *hashTable, int key, void *data){
     
     if(hashTable->table[index] == NULL){
         
-        printf("The Index %d is unused  (key %d), now adding node for %s\n", index, key, data);
+        printf("OK.   INDEX <%d>\tKEY <%d>\tWORD <%s>\n", index, key, data);
         
         hashTable->table[index] = createNode(key,data);
         
@@ -65,11 +65,11 @@ void insertData(HTable *hashTable, int key, void *data){
     }
     else{
         
-        //printf("The index is busy at %d (key %d) too bad for %s\n", index, key, data);
+        printf("BUSY. INDEX <%d>\tKEY <%d>\tWORD <%s>\n", index, key, data);
         
         //rehash is generated based on key + 1, this will recurse until it finds
         //the right spot, should not be too computationally expensive
-        insertData(hashTable, key + 1, data);
+        insertData(hashTable, key -1 , data);
         
         
     }
@@ -79,26 +79,28 @@ void insertData(HTable *hashTable, int key, void *data){
 int keyGenerator(char *word){
     
     // A B C D E F G H
-    // A*B+C+D+E+F
+    // A*      E+F+G+H
     
     //var
     int length = strlen(word);
-    int muls = 0;
+    int backLength;
+    int muls = 1;
     int sum  = 0;
 
     
     //Truncate hash
-    if (length > 6) length = 6;
+    backLength = (length - 1) - 9;
+    if (backLength < 0) backLength = 0;
     
     //get multiplication value
     muls = (int)word[1];
     
     
+    
     //ascii encoding
-    for(int i = 1; i < length; i++){
+    for(int i = length -1 ; i >= backLength; i--){
         
         int ascii = 0;
-        
         ascii = (int)word[i];
         
         //to lower case
@@ -114,10 +116,10 @@ int keyGenerator(char *word){
         
     }
     
-    printf("The word is: %s, the key is %d\n", word, muls * sum);
+    //printf("%d,\n", muls * sum);
 
     
-    return muls * sum;
+    return ((muls * sum) * muls * 2 ) - sum;
     
 }
 
@@ -198,7 +200,7 @@ void *lookupData(HTable *hashTable, int key, void *data){
 int hashNode(size_t tableSize, int key){
     
     //hash division
-    return tableSize % key;
+    return key % tableSize ;
     
 }
 
