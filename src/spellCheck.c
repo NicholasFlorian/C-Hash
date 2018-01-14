@@ -25,7 +25,7 @@ int main(int argc, char **argv){
     
     printf("PARSING DICTIONARY INTO MAP\n");
     //load them all
-    for(int i = 0; i < dictionary->count; i++){
+    for(int i = 0; i < /*dictionary->count*/10000; i++){
         
       
         if(keyGenerator(dictionary->array[i]) > 0){
@@ -103,8 +103,8 @@ int main(int argc, char **argv){
                     
                 }
                 
-                free(fileToCheck);
-                free(toCheck);
+                //free(fileToCheck);
+                //free(toCheck);
                 
                 printf("Summary:\nCorrectly spelt words: %d\nIncorrectly spelt words: %d", correctCount, incorrectCount);
                 

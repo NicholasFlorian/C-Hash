@@ -5,10 +5,12 @@
 
 #include "../include/hashTable.h"
 
-HTable *createTable(size_t size,
+HTable *createTable(
+                    size_t size,
                     int  (*hashFunction)(size_t tableSize, int key),
                     void (*destroyData)(void *data),
                     void (*printNode)(void *toBePrinted)){
+    
     
     HTable* newTable = malloc(sizeof(HTable));
     
@@ -22,6 +24,10 @@ HTable *createTable(size_t size,
         newTable->printNode = printNode;
         
     }
+    
+    newTable->firstCollisions = 0;
+    newTable->postCollisions = 0;
+    newTable->filledIndexes = 0;
     
     return newTable;
     
@@ -40,10 +46,46 @@ Node *createNode(int key, void *data){
 }
 
 
-void destroyTable(HTable *hashTable);
+void destroyTable(HTable *hashTable){
+    
+    
+    if(hashTable->table != NULL){
+    
+        int size = (int)hashTable->size;
+        
+        //free all indexes
+        for(int i = 0; i < size; i++){
+
+            /*
+            //clear data of node
+            if(hashTable->table[i] != NULL) {
+                
+                if(hashTable->table[i]->data != NULL){
+                    
+                    free(hashTable->table[i]->data);
+                    
+                }
+                
+                //destroy table
+                free(hashTable->table[i]);
+            
+            }
+            */
+            
+        }
+
+        free(hashTable->table);
+        
+    }
+    
+    //free rest of allocated memory
+    free(hashTable);
+    
+}
 
 void insertDataWord(HTable *hashTable, void *data){
     
+    //val
     int key = keyGenerator((char*)data);
     insertData(hashTable, key, data);
     
@@ -51,26 +93,49 @@ void insertDataWord(HTable *hashTable, void *data){
 
 void insertData(HTable *hashTable, int key, void *data){
     
+    //val
     int index = hashTable->hashFunction(hashTable->size, key);
-
+    int flag = 1;
     
+    if(index > hashTable->size && index < 0){
+        
+        printf("ERROR, index generated out of bounds.\n");
+        return;
+        
+    }
+    
+    //check if index generated is open
     if(hashTable->table[index] == NULL){
         
         printf("OK.   INDEX <%d>\tKEY <%d>\tWORD <%s>\n", index, key, data);
         
         hashTable->table[index] = createNode(key,data);
         
-        
+        //record data about the hash
+        hashTable->filledIndexes++;
         
     }
     else{
         
+        //record data about the hash
+        if(flag == 1) {
+         
+            hashTable->firstCollisions++;
+            flag = 0;
+            
+        }
+        else{
+            
+            hashTable->postCollisions++;
+            
+        }
+        
+        //generate next iteration if full
         printf("BUSY. INDEX <%d>\tKEY <%d>\tWORD <%s>\n", index, key, data);
         
         //rehash is generated based on key + 1, this will recurse until it finds
         //the right spot, should not be too computationally expensive
-        insertData(hashTable, key -1 , data);
-        
+        insertData(hashTable, key +1 , data);
         
     }
     
@@ -116,9 +181,7 @@ int keyGenerator(char *word){
         
     }
     
-    //printf("%d,\n", muls * sum);
-
-    
+    //really helps avoid too many colisions
     return ((muls * sum) * muls * 2 ) - sum;
     
 }
@@ -231,6 +294,17 @@ void betterPrintNodeData(HTable *hashTable, void* toBePrinted){
     
     int size = hashTable->size;//this is how
 
-    printf("%d %d %s\n", hashNode((size_t)size, keyGenerator(toBePrinted)), keyGenerator(toBePrinted), (char*)toBePrinted);
+    printf("Index<%d>\tKey<%d>\tStringData<%s>\n", hashNode((size_t)size, keyGenerator(toBePrinted)), keyGenerator(toBePrinted), (char*)toBePrinted);
     
 }
+
+void printMetaData(HTable *hashTable){
+    
+    printf("Size<%d> \tFirst Collisions <%d>\tPost Collisions <%d>\tFilled Indexes <%d>\n",
+           (int)hashTable->size,
+           hashTable->firstCollisions,
+           hashTable->postCollisions,
+           hashTable->filledIndexes);
+    
+}
+

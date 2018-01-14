@@ -35,6 +35,12 @@ typedef struct hTable{
     int (*hashFunction)(size_t tableSize, int key); ///< function pointer to a function to hash the data
     void (*printNode)(void *toBePrinted); ///< function pointer to a function that prints out a data element of the table
     void (*add) (struct hTable *hashTableToAdd, void *data); ///< function pointer for users to add a data element to the map.
+    
+    //Added code by nicholas
+    int firstCollisions; ///< stores amount of times code had to colide once
+    int postCollisions; ///< stores amount of times code had to colide several times
+    int filledIndexes; ///< stores total amount of data items in array
+    
 } HTable;
 
 
@@ -134,6 +140,15 @@ void destroyNodeData(void *data);
  **/
 void printNodeData(void *toBePrinted);
 
+/**Function to print data
+ *@param hashtable you want to use
+ *@param data you want to print
+ **/
 void betterPrintNodeData(HTable *hashTable, void *toBePrinted);
+
+/**Function to print hash meta data
+ *@param data you want to print
+ **/
+void printMetaData(HTable *hashTable);
 
 #endif
